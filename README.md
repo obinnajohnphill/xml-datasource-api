@@ -6,7 +6,9 @@
 
 *  Install docker engine (if you don't already have it), see bottom og this file
 
-*  RUN: docker-compose build -d
+*  RUN: docker-compose build
+
+*  RUN: docker-compose up
 
 ```
 

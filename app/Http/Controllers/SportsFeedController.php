@@ -91,7 +91,10 @@ class SportsFeedController extends Controller
      */
     public function convertXmlToArray($xml_string): array
     {
-        $xml = simplexml_load_string($xml_string, "SimpleXMLElement", LIBXML_NOCDATA);
+        $xml = simplexml_load_string(
+            $xml_string,
+            "SimpleXMLElement",
+            LIBXML_NOCDATA);
         return json_decode(json_encode($xml),TRUE);
     }
 }
