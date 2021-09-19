@@ -1,0 +1,49 @@
+version: '3.5'
+services:
+
+  # The Application
+  xml-http-request-app:
+    container_name:  xml-http-request-app
+    image:  xml-http-request-app
+    networks:
+      -  xml-http-request-app
+    build:
+      context: ./
+      dockerfile: docker/application/Dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - 9004:9000
+    environment:
+      - "APP_NAME=xml-http-request"
+      - "APP_URL=http://localhost:8080"
+      - "CACHE_DRIVER=file"
+      - "SESSION_DRIVER=file"
+
+  # The Web Server
+  xml-http-request-web:
+    container_name:  xml-http-request-web
+    image: xml-http-request-web
+    networks:
+      -  xml-http-request-app
+    build:
+      context: ./
+      dockerfile: docker/web/Dockerfile
+    working_dir: /var/www
+    depends_on:
+      -  xml-http-request-app
+    volumes:
+      - ./public:/var/www/public
+    ports:
+      - 8082:80
+
+  composer:
+    image: composer:1.7.2
+    command: install --ignore-platform-reqs --no-scripts
+    volumes:
+      - $PWD:/app
+
+networks:
+  xml-http-request-app:
+    name:  xml-http-request-app
